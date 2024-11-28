@@ -5,7 +5,7 @@ import '../constants/colors.dart';
 import '../widgets/todo_item.dart';
 
 class Home extends StatefulWidget {
-  Home({Key? key}) : super(key: key);
+  const Home({Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -30,31 +30,23 @@ class _HomeState extends State<Home> {
       body: Stack(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             child: Column(
               children: [
                 searchBox(),
                 Expanded(
-                  child: ListView(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                          top: 50,
-                          bottom: 20,
-                        ),
-                        child: Text(
-                          'All ToDos',
-                          style: TextStyle(
-                              fontSize: 30, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      for (ToDo todo in _foundToDo.reversed)
-                        ToDoItem(
-                          todo: todo,
-                          onToDoChanged: _handleToDoChange,
-                          onDeleteItem: _deleteToDoItem,
-                        ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: ListView(
+                      children: [
+                        for (ToDo todo in _foundToDo.reversed)
+                          ToDoItem(
+                            todo: todo,
+                            onToDoChanged: _handleToDoChange,
+                            onDeleteItem: _deleteToDoItem,
+                          ),
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -65,8 +57,8 @@ class _HomeState extends State<Home> {
             child: Row(children: [
               Expanded(
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 20, right: 20, left: 20),
-                  padding: EdgeInsets.symmetric(
+                  margin: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 20,
                     vertical: 5,
                   ),
@@ -84,29 +76,22 @@ class _HomeState extends State<Home> {
                   ),
                   child: TextField(
                     controller: _todoController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                         hintText: 'Add a new todo item',
                         border: InputBorder.none),
                   ),
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(bottom: 20, right: 20),
-                child: ElevatedButton(
-                  child: Text(
-                    '+',
-                    style: TextStyle(
-                      fontSize: 40,
-                    ),
-                  ),
+                margin: const EdgeInsets.only(bottom: 20, right: 20),
+                child: IconButton.filled(
                   onPressed: () {
-                    _addToDoItem(_todoController.text);
+                    if (_todoController.text.isNotEmpty) {
+                      _addToDoItem(_todoController.text);
+                    }
                   },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: tdBlue,
-                    minimumSize: Size(60, 60),
-                    elevation: 10,
-                  ),
+                  iconSize: 24,
+                  icon: const Icon(Icons.add),
                 ),
               ),
             ]),
@@ -122,7 +107,7 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void _deleteToDoItem(String id) {
+  void _deleteToDoItem(String? id) {
     setState(() {
       todosList.removeWhere((item) => item.id == id);
     });
@@ -156,14 +141,14 @@ class _HomeState extends State<Home> {
 
   Widget searchBox() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
         onChanged: (value) => _runFilter(value),
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           contentPadding: EdgeInsets.all(0),
           prefixIcon: Icon(
             Icons.search,
@@ -184,22 +169,19 @@ class _HomeState extends State<Home> {
       backgroundColor: tdBGColor,
       elevation: 0,
       title: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(
-            Icons.menu,
-            color: tdBlack,
-            size: 30,
-          ),
-          Container(
+          const Text('Your To-Do List '),
+          SizedBox(
             height: 40,
             width: 40,
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset('assets/images/img.png')),
-          ),
+          )
         ],
       ),
+      centerTitle: true,
     );
   }
 }
